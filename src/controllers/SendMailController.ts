@@ -35,7 +35,9 @@ class SendMailController {
         const variables = {
             name: user.name,
             title: survey.title,
-            description: survey.description
+            description: survey.description,
+            user_id: user.id,
+            link: process.env.URL_MAIL
         }
 
         //Verificar se o survey_users já existe, se sim, encaminhar o e-mail para ele ao invés de criar um novo
