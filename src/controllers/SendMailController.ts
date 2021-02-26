@@ -40,7 +40,8 @@ class SendMailController {
 
         //Verificar se o survey_users já existe, se sim, encaminhar o e-mail para ele ao invés de criar um novo
         const surveyUserAlreadyExists = await surveysUsersRepository.findOne({
-            where: [{user_id: user.id}, {value: null}]
+            where: [{user_id: user.id}, {value: null}],
+            //relations: ['user', 'survey']
         })
 
         if(surveyUserAlreadyExists) {
