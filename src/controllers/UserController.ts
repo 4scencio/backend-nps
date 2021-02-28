@@ -2,16 +2,18 @@ import { Request, Response } from 'express'
 import { getCustomRepository } from 'typeorm'
 import { UsersRepository } from '../repositories/UsersRepository'
 import * as yup from 'yup'
+import * as bcrypt from 'bcrypt'
 import { AppError } from '../errors/AppError'
 
 class UserController {
     async create(request: Request, response: Response) {
-        const { name, email } = request.body
+        const { name, email, password } = request.body
 
         //Yup Validation
         const schema = yup.object().shape({
             name: yup.string().required(),
-            email: yup.string().email().required()
+            email: yup.string().email().required(),
+            password: yup.string().required()
         })
 
         try {
@@ -32,10 +34,14 @@ class UserController {
             throw new AppError('User already exists!')
         }
 
+        //HASH DA SENHA C/ BCRYPT
+        const hashPassword = await bcrypt.hash(password, 8)
+
         //SE NÃO, CRIE O USUÁRIO
         const user = userRepository.create({
             name,
-            email
+            email,
+            password: hashPassword
         })
 
         await userRepository.save(user)
