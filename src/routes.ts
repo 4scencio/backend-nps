@@ -15,6 +15,7 @@ const npsController = new NpsController()
 
 router.post('/users', userController.create)
 router.get('/users', userController.show)
+router.post('/session', userController.login)
 
 router.post('/surveys', surveysController.create)
 router.get('/surveys', surveysController.show)
